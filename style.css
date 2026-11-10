@@ -1,0 +1,319 @@
+/* =========================================================
+   1) المتغيرات: لوحة الألوان والخطوط والأبعاد (نغيّرها من مكان واحد)
+   ========================================================= */
+:root {
+  --bg:        #FBF3F6;   /* وردي مبيّض جدًا: خلفيات الحقول */
+  --surface:   #FFFFFF;   /* أبيض: البطاقات */
+  --rose-soft: #FDE3EC;   /* وردي فاتح: التمييز والشارات */
+  --rose:      #F29BB8;   /* وردي: رسوم وحدود */
+  --rose-deep: #C2306B;   /* توتي: الأزرار والعناصر الفعّالة */
+  --plum:      #4B2142;   /* برقوقي غامق: الشريط الجانبي */
+  --plum-2:    #7A2E8E;   /* بنفسجي: تدرّج الشريط والبطاقات */
+  --lilac:     #EFE6FA;   /* لافندر فاتح: فترات المذاكرة */
+  --lilac-deep:#6B45A8;   /* لافندر غامق */
+  --gold-soft: #FFF0D6;   /* ذهبي فاتح: تمييز الـ streak */
+  --gold-deep: #A8620B;   /* ذهبي غامق */
+  --ink:       #2E1F2D;   /* نص رئيسي */
+  --grey:      #7A6B78;   /* نص ثانوي */
+  --line:      #F3E4EB;   /* حدود خفيفة */
+
+  --font-head: "Cairo", "Segoe UI", Tahoma, sans-serif;
+  --font-body: "Tajawal", "Segoe UI", Tahoma, system-ui, sans-serif;
+
+  --radius-lg: 22px;      /* البطاقات */
+  --radius-md: 12px;      /* الحقول والأزرار */
+  --radius-pill: 999px;   /* الشارات */
+  --sidebar-w: 240px;
+}
+
+/* =========================================================
+   2) الإعدادات الأساسية
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: linear-gradient(160deg, #FFF5F8 0%, #F7EEFB 100%) fixed;
+  line-height: 1.75;
+}
+
+h1, h2 { font-family: var(--font-head); font-weight: 600; margin: 0; }
+h1 { font-size: clamp(1.6rem, 3vw, 2.1rem); line-height: 1.45; }
+h2 { font-size: 1.15rem; margin-bottom: 14px; }
+p  { margin: 0; }
+
+:focus-visible { outline: 3px solid var(--rose); outline-offset: 2px; }
+
+/* =========================================================
+   3) هيكل الصفحة: شريط جانبي ثابت + محتوى
+   ========================================================= */
+.app { display: flex; min-height: 100vh; }
+
+.sidebar {
+  position: sticky; top: 0;
+  width: var(--sidebar-w); height: 100vh;
+  flex-shrink: 0;
+  display: flex; flex-direction: column; gap: 32px;
+  padding: 28px 20px;
+  background: linear-gradient(180deg, var(--plum) 0%, var(--plum-2) 100%);
+  color: #fff;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand strong { font-family: var(--font-head); font-size: 1.2rem; display: block; line-height: 1.1; color: #fff; }
+.brand small  { color: rgba(255,255,255,.7); font-size: .78rem; }
+.brand-mark {
+  width: 42px; height: 42px; border-radius: 14px;
+  display: grid; place-items: center;
+  background: linear-gradient(135deg, var(--rose) 0%, var(--rose-deep) 100%); color: #fff;
+  font-family: var(--font-head); font-size: 1.3rem;
+}
+
+.nav { display: flex; flex-direction: column; gap: 4px; }
+.nav-link {
+  padding: 11px 14px; border-radius: var(--radius-md);
+  color: rgba(255,255,255,.75); text-decoration: none; font-weight: 500;
+  transition: background .2s, color .2s;
+}
+.nav-link:hover { background: rgba(255,255,255,.1); color: #fff; }
+
+.sidebar-credit { margin-top: auto; font-size: .8rem; color: rgba(255,255,255,.65); line-height: 1.8; }
+
+.content {
+  flex: 1; min-width: 0;
+  max-width: 1040px;
+  padding: 40px clamp(20px, 4vw, 56px) 80px;
+}
+
+.section { padding-top: 12px; margin-bottom: 56px; scroll-margin-top: 16px; }
+.section-head { margin-bottom: 24px; }
+.section-head p { color: var(--grey); margin-top: 6px; }
+
+/* =========================================================
+   4) مكوّنات قابلة لإعادة الاستخدام
+   ========================================================= */
+
+/* البطاقة */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(194, 48, 107, .08);
+}
+.card-accent {
+  background: linear-gradient(135deg, var(--rose-deep) 0%, var(--plum-2) 100%);
+  border-color: transparent; color: #fff;
+  box-shadow: 0 14px 34px rgba(122, 46, 142, .25);
+}
+.card-accent .muted { color: rgba(255,255,255,.85); }
+
+.muted { color: var(--grey); font-size: .92rem; }
+.big-text { font-family: var(--font-head); font-size: 1.4rem; line-height: 1.5; margin: 6px 0 10px; }
+
+/* شبكات */
+.stats  { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px; }
+.grid-2 { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; }
+
+.stat { display: flex; flex-direction: column; gap: 2px; }
+.stat-value { font-family: var(--font-head); font-size: 2.6rem; line-height: 1; color: var(--rose-deep); }
+.stat-label { color: var(--grey); font-size: .92rem; }
+
+/* الشارات: أولوية المهام */
+.badge {
+  display: inline-block; padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  font-size: .78rem; font-weight: 600; white-space: nowrap;
+}
+.badge-high   { background: #FFD5E3; color: #9B1C4B; }
+.badge-medium { background: var(--gold-soft); color: var(--gold-deep); }
+.badge-low    { background: var(--lilac); color: var(--lilac-deep); }
+
+/* زر */
+.btn {
+  border: 0; cursor: pointer;
+  padding: 12px 20px; border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--rose-deep) 0%, #A62A86 100%); color: #fff;
+  font: 600 .95rem var(--font-body);
+  box-shadow: 0 6px 16px rgba(194, 48, 107, .25);
+  transition: background .2s, transform .1s;
+}
+.btn:hover  { filter: brightness(.92); }
+.btn:active { transform: scale(.97); }
+
+/* =========================================================
+   5) قائمة المهام
+   ========================================================= */
+.task-form { display: flex; gap: 10px; margin-bottom: 18px; }
+.task-form input, .task-form select {
+  font: inherit; color: var(--ink);
+  padding: 12px 14px;
+  background: var(--bg); border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+.task-form input { flex: 1; min-width: 0; }
+
+.task-list { list-style: none; margin: 0; padding: 0; }
+.task {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 0; border-bottom: 1px solid var(--line);
+}
+.task:last-child { border-bottom: 0; }
+.task-title { flex: 1; }
+
+.check {
+  width: 22px; height: 22px; flex-shrink: 0;
+  border: 2px solid var(--rose); border-radius: 50%;
+  cursor: pointer;
+}
+.task.done .check { background: var(--rose-deep); border-color: var(--rose-deep); }
+.task.done .task-title { color: var(--grey); text-decoration: line-through; }
+
+/* =========================================================
+   6) الجدول الأسبوعي (CSS Grid: 6 أعمدة)
+   ========================================================= */
+.scroll-x { overflow-x: auto; }
+.timetable {
+  display: grid;
+  grid-template-columns: 64px repeat(5, minmax(110px, 1fr));
+  gap: 8px; min-width: 640px;
+}
+.tt-cell { min-height: 56px; }
+.tt-head { min-height: 0; text-align: center; font-weight: 600; color: var(--grey); }
+.tt-time { font-size: .82rem; color: var(--grey); padding-top: 6px; }
+
+.block {
+  display: flex; align-items: center; height: 100%;
+  padding: 8px 12px; border-radius: var(--radius-md);
+  font-size: .88rem; font-weight: 500;
+}
+.block-class { background: var(--rose-soft); color: #9B1C4B; border-inline-start: 4px solid var(--rose-deep); }   /* محاضرة */
+.block-study { background: var(--lilac);     color: var(--lilac-deep); border-inline-start: 4px solid var(--lilac-deep); }   /* وقت مذاكرة */
+
+/* =========================================================
+   7) المواعيد النهائية
+   ========================================================= */
+.deadline-list { display: grid; gap: 12px; }
+.deadline { display: flex; align-items: center; gap: 18px; padding: 18px 24px; }
+.deadline-info { flex: 1; }
+.deadline-info h2 { margin-bottom: 2px; font-size: 1.05rem; }
+
+.date-chip {
+  width: 58px; padding: 8px 0; text-align: center;
+  background: var(--rose-soft); border-radius: 14px;
+  display: flex; flex-direction: column; line-height: 1.1;
+}
+.date-chip strong { font-family: var(--font-head); font-size: 1.4rem; color: var(--rose-deep); }
+.date-chip span   { font-size: .75rem; color: var(--grey); }
+
+/* =========================================================
+   8) التقدم والإحصائيات
+   ========================================================= */
+.progress { height: 14px; background: var(--bg); border-radius: var(--radius-pill); overflow: hidden; margin-bottom: 10px; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--rose) 0%, var(--rose-deep) 100%); border-radius: var(--radius-pill); }
+
+.bars { display: flex; align-items: flex-end; justify-content: space-between; gap: 10px; height: 150px; }
+.bar { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 6px; }
+.bar span { width: 100%; max-width: 38px; background: linear-gradient(180deg, var(--rose) 0%, var(--rose-deep) 100%); border-radius: 10px 10px 4px 4px; }
+.bar small { color: var(--grey); font-size: .78rem; }
+
+/* =========================================================
+   9) الشاشات الصغيرة (الجوال والتابلت)
+   ========================================================= */
+@media (max-width: 860px) {
+  .app { flex-direction: column; }
+  .sidebar {
+    position: static; width: 100%; height: auto;
+    flex-direction: row; flex-wrap: wrap; align-items: center;
+    gap: 12px 20px; padding: 16px 20px;
+    border-right: 0; border-bottom: 1px solid var(--line);
+  }
+  .nav { flex-direction: row; flex-wrap: wrap; }
+  .sidebar-credit { display: none; }
+  .stats, .grid-2 { grid-template-columns: 1fr; }
+  .task-form { flex-wrap: wrap; }
+  .task-form input { flex-basis: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+}
+
+/* =========================================================
+   10) الخطوة 2: التنقل بين الأقسام + أزرار المهام
+   ========================================================= */
+
+/* قسم واحد ظاهر في كل مرة: JavaScript يضيف .active للقسم الحالي */
+.section { display: none; }
+.section.active { display: block; }
+
+.nav-link.active { background: rgba(255,255,255,.18); color: #fff; font-weight: 600; }
+
+/* دائرة الإنجاز أصبحت زرًا حقيقيًا ليعمل بلوحة المفاتيح */
+button.check { padding: 0; background: transparent; position: relative; }
+.task.done .check::after {
+  content: ""; position: absolute; left: 6px; top: 2px;
+  width: 5px; height: 10px;
+  border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg);
+}
+
+.delete-btn {
+  border: 0; background: transparent; cursor: pointer;
+  color: var(--grey); font-size: 1.3rem; line-height: 1;
+  padding: 4px 8px; border-radius: 8px;
+}
+.delete-btn:hover { background: var(--rose-soft); color: var(--rose-deep); }
+
+.empty { text-align: center; color: var(--grey); padding: 24px 0 8px; }
+.empty[hidden] { display: none; }
+
+/* =========================================================
+   11) الخطوة 3: المواعيد النهائية التفاعلية
+   ========================================================= */
+.deadline-form-card { margin-bottom: 16px; }
+.task-form input[type="date"] { flex: 0 0 auto; }
+.deadline.overdue { opacity: .7; }
+.deadline.overdue .date-chip { background: var(--line); }
+
+/* =========================================================
+   12) الخطوة 4: الجدول الأسبوعي التفاعلي
+   ========================================================= */
+.schedule-form-card { margin-bottom: 16px; }
+.schedule-form { flex-wrap: wrap; }
+.schedule-form input { flex: 1 1 220px; }
+.form-error { color: #9B1C4B; font-size: .9rem; margin-top: 12px; }
+.form-error[hidden] { display: none; }
+
+/* 11 صفًا لكل ساعة من 08:00 إلى 19:00 */
+.timetable { grid-template-rows: auto repeat(11, 56px); }
+
+/* خلية فارغة تُظهر شبكة الجدول بخفوت */
+.tt-slot { background: var(--bg); border-radius: 10px; opacity: .6; }
+
+/* الكتلة الآن تحتوي العنوان والوقت وزر الحذف */
+.block { position: relative; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; z-index: 1; }
+.block small { font-size: .74rem; opacity: .8; }
+.block .delete-btn { position: absolute; top: 2px; inset-inline-end: 4px; font-size: 1.1rem; padding: 0 6px; color: inherit; }
+
+/* =========================================================
+   13) الخطوة 5: لوحة التحكم والتقدم
+   ========================================================= */
+.progress-fill { transition: width .4s ease; }
+.bar b { font-size: .78rem; color: var(--grey); font-weight: 600; }
+.bar span { min-height: 4px; }
+#study-hours { margin-top: 4px; }
+
+/* =========================================================
+   14) ألوان إضافية: بطاقات الإحصائيات الثلاث بألوان مختلفة
+   ========================================================= */
+.stat:nth-child(1) { background: var(--rose-soft); border-color: transparent; }
+.stat:nth-child(2) { background: var(--lilac);     border-color: transparent; }
+.stat:nth-child(3) { background: var(--gold-soft); border-color: transparent; }
+.stat:nth-child(2) .stat-value { color: var(--lilac-deep); }   /* streak */
+.stat:nth-child(3) .stat-value { color: var(--gold-deep); }
+.stat-label { color: var(--ink); opacity: .75; }

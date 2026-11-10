@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<!-- lang="ar" و dir="rtl": يجعلان الصفحة عربية وتُقرأ من اليمين إلى اليسار -->
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>نظام ذكي لإدارة الوقت وتنظيم المهام الدراسية</title>
+  <!-- خطوط عربية من Google Fonts (تحتاج إنترنت، ولها بدائل في CSS) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- ========== الشريط الجانبي: الشعار + القائمة ========== -->
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">S</span>
+        <div>
+          <strong>StudyFlow</strong>
+          <small>منظّم الوقت والمهام الدراسية</small>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="القائمة الرئيسية">
+        <a href="#dashboard" class="nav-link">لوحة التحكم</a>
+        <a href="#schedule" class="nav-link">الجدول الأسبوعي</a>
+        <a href="#tasks" class="nav-link">المهام</a>
+        <a href="#deadlines" class="nav-link">المواعيد النهائية</a>
+        <a href="#analytics" class="nav-link">التقدم</a>
+      </nav>
+
+      <p class="sidebar-credit">إعداد الطالبات<br>فاطمه علي · شدن محمد · خلود خالد</p>
+    </aside>
+
+    <!-- ========== المحتوى الرئيسي: خمسة أقسام ========== -->
+    <main class="content">
+
+      <!-- 1) لوحة التحكم -->
+      <section id="dashboard" class="section">
+        <header class="section-head">
+          <h1 id="greeting">أهلًا بكِ</h1>
+          <p id="greeting-sub"></p>
+        </header>
+
+        <div class="stats">
+          <article class="card stat">
+            <span class="stat-value" id="stat-open">0</span>
+            <span class="stat-label">مهام مفتوحة</span>
+          </article>
+          <article class="card stat">
+            <span class="stat-value" id="stat-streak">0</span>
+            <span class="stat-label">أيام مذاكرة متتالية</span>
+          </article>
+          <article class="card stat">
+            <span class="stat-value" id="stat-week">0</span>
+            <span class="stat-label">مواعيد خلال 7 أيام</span>
+          </article>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <h2>مهام اليوم</h2>
+            <ul class="task-list" id="dash-tasks"></ul>
+            <p class="empty" id="dash-empty" hidden>لا توجد مهام الآن. أضيفي مهمة من تبويب المهام.</p>
+          </article>
+
+          <article class="card card-accent">
+            <h2>أقرب موعد تسليم</h2>
+            <p class="big-text" id="next-title">لا توجد مواعيد قادمة</p>
+            <p class="muted" id="next-meta">أضيفي موعدًا من تبويب المواعيد النهائية.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- 2) الجدول الأسبوعي -->
+      <section id="schedule" class="section">
+        <header class="section-head">
+          <h1>الجدول الأسبوعي</h1>
+          <p>محاضراتك وفترات مذاكرتك في مكان واحد.</p>
+        </header>
+
+        <!-- نموذج الإضافة (الخيارات تُملأ من JavaScript) -->
+        <article class="card schedule-form-card">
+          <form class="task-form schedule-form" id="schedule-form">
+            <input type="text" id="sch-title" placeholder="محاضرة أو فترة مذاكرة (مثال: الخوارزميات)" aria-label="العنوان">
+            <select id="sch-day" aria-label="اليوم"></select>
+            <select id="sch-start" aria-label="وقت البداية"></select>
+            <select id="sch-duration" aria-label="المدة"></select>
+            <select id="sch-type" aria-label="النوع">
+              <option value="class">محاضرة</option>
+              <option value="study">فترة مذاكرة</option>
+            </select>
+            <button type="submit" class="btn">إضافة للجدول</button>
+          </form>
+          <p class="form-error" id="sch-error" role="alert" hidden></p>
+        </article>
+
+        <!-- الجدول يُبنى بالكامل بواسطة JavaScript -->
+        <div class="card scroll-x">
+          <div class="timetable" id="timetable"></div>
+        </div>
+        <p class="empty" id="sch-empty" hidden>أسبوعك فارغ. أضيفي أول محاضرة أو فترة مذاكرة من النموذج أعلاه.</p>
+      </section>
+
+      <!-- 3) المهام -->
+      <section id="tasks" class="section">
+        <header class="section-head">
+          <h1>مدير المهام</h1>
+          <p>أضيفي مهمة، حدّدي أولويتها، وضعي علامة عند إنجازها.</p>
+        </header>
+
+        <article class="card">
+          <form class="task-form" id="task-form">
+            <input type="text" id="task-input" placeholder="ما الذي تريدين إنجازه؟" aria-label="عنوان المهمة">
+            <select id="task-priority" aria-label="الأولوية">
+              <option value="high">عالية</option>
+              <option value="medium" selected>متوسطة</option>
+              <option value="low">منخفضة</option>
+            </select>
+            <button type="submit" class="btn">إضافة مهمة</button>
+          </form>
+
+          <ul class="task-list" id="task-list"></ul>
+          <p class="empty" id="task-empty" hidden>لا توجد مهام بعد. أضيفي أول مهمة من الأعلى.</p>
+        </article>
+      </section>
+
+      <!-- 4) المواعيد النهائية -->
+      <section id="deadlines" class="section">
+        <header class="section-head">
+          <h1>المواعيد النهائية</h1>
+          <p>كل ما يجب تسليمه، الأقرب أولًا.</p>
+        </header>
+
+        <article class="card deadline-form-card">
+          <form class="task-form" id="deadline-form">
+            <input type="text" id="deadline-title" placeholder="ما الموعد؟ (مثال: اختبار قواعد البيانات)" aria-label="عنوان الموعد">
+            <input type="date" id="deadline-date" aria-label="تاريخ التسليم">
+            <button type="submit" class="btn">إضافة موعد</button>
+          </form>
+        </article>
+
+        <!-- القائمة تُبنى بواسطة JavaScript -->
+        <div class="deadline-list" id="deadline-list"></div>
+        <p class="empty" id="deadline-empty" hidden>لا توجد مواعيد بعد. أضيفي موعدًا وسنحسب لكِ الأيام المتبقية.</p>
+      </section>
+
+      <!-- 5) التقدم والإحصائيات -->
+      <section id="analytics" class="section">
+        <header class="section-head">
+          <h1>تقدّمك</h1>
+          <p>الإنجازات الصغيرة تصنع فرقًا كبيرًا. هذا ما أنجزتِه حتى الآن.</p>
+        </header>
+
+        <div class="grid-2">
+          <article class="card">
+            <h2>المهام المنجزة</h2>
+            <div class="progress" id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+            <p class="muted" id="progress-text">لا توجد مهام بعد</p>
+            <p class="muted" id="study-hours"></p>
+          </article>
+
+          <article class="card">
+            <h2>المنجز في آخر 7 أيام</h2>
+            <div class="bars" id="bars"></div>
+          </article>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
